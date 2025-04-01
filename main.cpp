@@ -97,7 +97,7 @@ int main() {
     // show_dfa_set();
     scan();
     ShowTokens();
-    // WriteTokens();
+    WriteTokens();
     return 0;
 }
 void ShowTokens() {
