@@ -399,21 +399,6 @@ void scan() {
 void handlerError(const string& ErrorText) {
     cout<<"error: "<<ErrorText<<endl;
 }
-bool match_DFA (string sentence) {
-    int state=0;
-    if (sentence=="") {
-        while (true) {
-            break;
-        }
-    }
-    else {
-        for (int i=0;i<sentence.size();i++) {
-            if (dfa[state].count(sentence[i])==0)return false;
-            state = dfa[state][sentence[i]];
-        }
-        return TerminalState[state];
-    }
-}
 void MovePoint() {
     if (file.peek()==EOF)return;
     file.get(ch);
