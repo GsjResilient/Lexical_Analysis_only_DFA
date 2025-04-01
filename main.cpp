@@ -11,7 +11,7 @@ const int N=1100;  //状态数
 const int TerminalFlag=233; //扫描过程结束的标志码
 void init(const string& input_path);void scan();void  GetNFA();void NFA_TO_DFA();
 void handlerError(const string& ErrorText);bool match_DFA (string sentence="") ;void MovePoint();
-void show_dfa_set();void BackPoint();void ShowTokens();
+void show_dfa_set();void BackPoint();void ShowTokens();void WriteTokens();
 ifstream file;
 int line_number;
 int start_point;
@@ -97,12 +97,24 @@ int main() {
     // show_dfa_set();
     scan();
     ShowTokens();
+    // WriteTokens();
     return 0;
 }
 void ShowTokens() {
     for (const auto& v:tokens) {
         cout<<v.type1()<<", "<<v.value1()<<endl;
     }
+}
+void WriteTokens() {
+    file.close();
+    ofstream output;
+    const string OutputPath="result.txt";
+    output.open(OutputPath);
+    for (const auto& v:tokens) {
+        output<<v.type1()<<", "<<v.value1()<<endl;
+    }
+    cout<<"finish writing in: "<<OutputPath<<endl;
+    output.close();
 }
 
 void init(const string& input_path) {
@@ -120,21 +132,23 @@ void init(const string& input_path) {
     }
 }
 void  GetNFA() {
-    fstream input("WenFa.txt");
+    fstream input("WenFa.txt",std::ios::in);
     int n;
-    input>>n;
+    input>>std::skipws>>n;
 
     while (n--) {
         bool IsS=true;
         int cnt;
-        input>>cnt>>ed;
+        input>>std::skipws>>cnt>>ed;
+        // cout<<cnt<<" "<<ed<<endl;
         while (cnt--) {
             char left;
-            string right;
-            char tmp1,tmp2;
-            input >> left >>tmp1>>tmp2>>right;
-
-            // cout<<left<<' '<<right<<endl;
+            string right="";
+            char tmp1,tmp2,r0,r1;
+            input >> std::skipws>>left>>tmp1>>tmp2;
+            input>>std::noskipws>>r0>>r1;
+            right+=r0;
+            if (r1!='\n')right+=r1;
             if (IsS) {
                 nfa_S=left;
                 IsS=false;
@@ -324,7 +338,8 @@ void CheckTerminalCode(const int TerminalCode) {
         case error_number:break;
         case error_identifier:break;
         case error_special:
-            cout<<" error_special "<<endl;
+            cout<<" error_special "<<' '<<Word.size()<<' '<<Word<<endl;
+            ShowCurPointLocation();
         break;
         case comment:
             // cout<<" ZhuShi finish "<<endl;
@@ -407,9 +422,11 @@ void MovePoint() {
         cur_point=start_point=0;
     }
     else {
+        EraseLeftSpace(Word);
         if (Word.empty())start_point=cur_point;
         if (ch!='@')Word+=ch;
 
         cur_point++;
+        // cout<<start_point<<' '<<cur_point<<endl;
     }
 }
