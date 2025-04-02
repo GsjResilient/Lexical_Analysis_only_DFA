@@ -1,0 +1,10 @@
+9 I
+S->bE
+S->b
+S->_E
+E->bE
+E->aE
+E->_E
+E->_
+E->a
+E->b

@@ -1,0 +1,22 @@
+21 Y
+S->aA
+A->aA
+A->a
+A->.B
+S->.B
+B->aB
+B->a
+S->a
+A->eC
+A->EC
+C->aC
+C->a
+B->aD
+D->eC
+D->EC
+C->+G
+C->-G
+G->aG
+G->a
+A->.
+B->eC
